@@ -41,7 +41,7 @@ var TrueStory = TrueStory || (function(){
                     const jsonEvents = JSON.stringify(events);
                     
                     //events = [];
-                    fetch('http://localhost:5001/truestory-7fe79/us-central1/captureEvents?uid='+_args[0]+'&host='+_args[1]+'&session='+sessionID, {
+                    fetch('https://us-central1-truestory-7fe79.cloudfunctions.net/captureEvents?uid='+_args[0]+'&host='+_args[1]+'&session='+sessionID, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'                        
