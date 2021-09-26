@@ -34,6 +34,7 @@ var TrueStory = TrueStory || (function(){
         helloWorld : function() {
             let lastPushEventCount = 0;
             let events = [];
+            let startTime = new Date().getTime();
             
             let instance = idleTimeout(() => {
               
@@ -50,7 +51,7 @@ var TrueStory = TrueStory || (function(){
                     const jsonEvents = JSON.stringify(events);
                     
                     //events = [];
-                    fetch('https://us-central1-truestory-7fe79.cloudfunctions.net/captureEvents?uid='+_args[0]+'&host='+_args[1]+'&session='+sessionID, {
+                    fetch('https://us-central1-truestory-7fe79.cloudfunctions.net/captureEvents?uid='+_args[0]+'&host='+_args[1]+'&session='+sessionID+'&start='+startTime, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'                        
