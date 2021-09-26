@@ -1,11 +1,41 @@
+Skip to content
+Search or jump to…
+Pull requests
+Issues
+Marketplace
+Explore
+ 
+@CypherHub 
+CypherHub
+/
+trueStory-public
+Public
+1
+00
+Code
+Issues
+Pull requests
+Actions
+Projects
+Wiki
+Security
+Insights
+Settings
+trueStory-public/trueStoryTracker-V1-9-26_1Second.js
+@CypherHub
+CypherHub Update and rename trueStoryTracker-V1-9-25_1Second.js to trueStoryTra…
+…
+Latest commit 59bc8bd 17 minutes ago
+ History
+ 1 contributor
+70 lines (58 sloc)  44.9 KB
+   
 // https://stackoverflow.com/questions/2190801/passing-parameters-to-javascript-files
 var rrwebRecord=function(){"use strict";
 /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
-
     Permission to use, copy, modify, and/or distribute this software for any
     purpose with or without fee is hereby granted.
-
     THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
     REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
     AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
@@ -34,6 +64,7 @@ var TrueStory = TrueStory || (function(){
         helloWorld : function() {
             let lastPushEventCount = 0;
             let events = [];
+            let startTime = new Date().getTime();
             
             let instance = idleTimeout(() => {
               
@@ -50,7 +81,7 @@ var TrueStory = TrueStory || (function(){
                     const jsonEvents = JSON.stringify(events);
                     
                     //events = [];
-                    fetch('https://us-central1-truestory-7fe79.cloudfunctions.net/captureEvents?uid='+_args[0]+'&host='+_args[1]+'&session='+sessionID, {
+                    fetch('https://us-central1-truestory-7fe79.cloudfunctions.net/captureEvents?uid='+_args[0]+'&host='+_args[1]+'&session='+sessionID+'&start='+startTime, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'                        
