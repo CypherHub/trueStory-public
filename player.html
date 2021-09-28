@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/rrweb-player@latest/dist/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/rrweb-player@latest/dist/index.js"></script>
+    <link rel="icon" type="image/png" sizes="96x96" href="https://truestory-7fe79.web.app/assets/img/favicon.png">
+    
+</head>
+<body class="iframe_view">
+    <div id="rrweb_player">
+</div>
+<Style>
+    html,body {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    body {
+        margin: 0;
+        box-sizing: border-box;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+            Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+    }
+</Style>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        const queryString = window.location.search;
+        //console.log(queryString);
+        const urlParams = new URLSearchParams(queryString);
+        console.log(urlParams.get('session'))
+        $.ajax({
+            url: urlParams.get('session'),
+            success: function (res) {
+                let events = null;
+                if (typeof res == "string") {
+                    events = JSON.parse(res);
+                } else {
+                    events = res;
+                }
+                new rrwebPlayer({
+                    target: $("#rrweb_player")[0],
+                    data: {
+                        events,
+                        autoPlay: true,
+                    },
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>
