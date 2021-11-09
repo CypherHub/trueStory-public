@@ -37,7 +37,7 @@ var TrueStory = TrueStory || (function(){
             let lastPushEventCount = 0;
             let events = [];
             let startTime = new Date().getTime();
-            console.log('TrueStory INit')
+            console.log('TrueStory INit 2')
             // let instance = idleTimeout(() => {
               
             // });
@@ -51,7 +51,7 @@ var TrueStory = TrueStory || (function(){
             function save() {
                 const jsonEvents = JSON.stringify(events);
                 const byteSize = str => new Blob([str]).size;
-                let sizeOfEvents = byteSize(`jsonEvents`)/1000;
+                let si1Sx`zeOfEvents = byteSize(`jsonEvents`)/1000;
                 
                 if(lastPushEventCount!=events.length && !isLocalhost && sizeOfEvents<800){
                     
