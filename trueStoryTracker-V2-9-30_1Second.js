@@ -51,7 +51,7 @@ var TrueStory = TrueStory || (function(){
             function save() {
                 const jsonEvents = JSON.stringify(events);
                 const byteSize = str => new Blob([str]).size;
-                let si1Sx`zeOfEvents = byteSize(`jsonEvents`)/1000;
+                let sizeOfEvents = byteSize(`jsonEvents`)/1000;
                 
                 if(lastPushEventCount!=events.length && !isLocalhost && sizeOfEvents<800){
                     
