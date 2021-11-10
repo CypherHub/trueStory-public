@@ -59,6 +59,9 @@ var TrueStory = TrueStory || (function(){
             visitorId = result.visitorId
             console.log('Visitor ID is '+visitorId)
             })
+            let referer = document.referrer;
+            console.log('Referer is, '+referer)
+
             // let instance = idleTimeout(() => {
               
             // });
@@ -78,7 +81,7 @@ var TrueStory = TrueStory || (function(){
                     
 
                     //events = [];
-                    fetch('https://us-central1-truestory-7fe79.cloudfunctions.net/captureEvents?uid='+_args[0]+'&host='+_args[1]+'&session='+sessionID+'&start='+startTime+'&visitorID='+visitorId, {
+                    fetch('https://us-central1-truestory-7fe79.cloudfunctions.net/captureEvents?uid='+_args[0]+'&host='+_args[1]+'&session='+sessionID+'&start='+startTime+'&visitorID='+visitorId+'&referer='+referer, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'                        
