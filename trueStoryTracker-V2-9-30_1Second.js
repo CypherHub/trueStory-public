@@ -37,7 +37,7 @@ var TrueStory = TrueStory || (function(){
             let lastPushEventCount = 0;
             let events = [];
             let startTime = new Date().getTime();
-            console.log('TrueStory INit 2')
+            console.log('TrueStory INit 3')
             // let instance = idleTimeout(() => {
               
             // });
