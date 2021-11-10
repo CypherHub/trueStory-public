@@ -23,6 +23,19 @@ var e,t=function(){return(t=Object.assign||function(e){for(var t,n=1,r=arguments
 // //# sourceMappingURL=idle-timeout.min.js.map
                            
 var TrueStory = TrueStory || (function(){
+    //INIT Fingerprint
+    const fpPromise = new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.onload = resolve
+        script.onerror = reject
+        script.async = true
+        script.src = 'https://cdn.jsdelivr.net/npm/'
+          + '@fingerprintjs/fingerprintjs@3/dist/fp.min.js'
+        document.head.appendChild(script)
+      })
+        .then(() => FingerprintJS.load())
+    
+
     var _args = {}; // private
     let sessionID = Math.random().toString(36).substr(2, 9);
     let url = window.location.href;
@@ -37,7 +50,15 @@ var TrueStory = TrueStory || (function(){
             let lastPushEventCount = 0;
             let events = [];
             let startTime = new Date().getTime();
+            visitorId = null;
             console.log('TrueStory V3 Initialized')
+            fpPromise
+            .then(fp => fp.get())
+            .then(result => {
+            // This is the visitor identifier:
+            visitorId = result.visitorId
+            console.log('Visitor ID is '+visitorId)
+            })
             // let instance = idleTimeout(() => {
               
             // });
@@ -57,7 +78,7 @@ var TrueStory = TrueStory || (function(){
                     
 
                     //events = [];
-                    fetch('https://us-central1-truestory-7fe79.cloudfunctions.net/captureEvents?uid='+_args[0]+'&host='+_args[1]+'&session='+sessionID+'&start='+startTime, {
+                    fetch('https://us-central1-truestory-7fe79.cloudfunctions.net/captureEvents?uid='+_args[0]+'&host='+_args[1]+'&session='+sessionID+'&start='+startTime+'&visitorID='+visitorId, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'                        
