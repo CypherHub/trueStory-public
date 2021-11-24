@@ -92,7 +92,7 @@ var TrueStory = TrueStory || (function(){
                     },
                     body: jsonEvents,
                     }).then(response =>{
-                        console.log( response)
+                        //console.log( response)
                     })
                 }else{
                     if(isLocalhost) console.log('Not Tracking because local host');
