@@ -51,7 +51,7 @@ var TrueStory = TrueStory || (function(){
             let events = [];
             let startTime = new Date().getTime();
             visitorId = null;
-            console.log('TrueStory V3 Initialized')
+            console.log('TrueStory V4 Initialized')
             fpPromise
             .then(fp => fp.get())
             .then(result => {
@@ -73,25 +73,32 @@ var TrueStory = TrueStory || (function(){
             });
 
             function save() {
-                const jsonEvents = JSON.stringify(events);
+                let jsonEvents = JSON.stringify(events);
                 const byteSize = str => new Blob([str]).size;
                 let sizeOfEvents = byteSize(`jsonEvents`)/1000;
-                
+                //Activate this line for Dev
+                isLocalhost = false;
                 if(lastPushEventCount!=events.length && !isLocalhost && sizeOfEvents<800){
-                    
-
+                    jsonEvents = JSON.stringify(events);
+                    events = [];
+                    //Activate this line for Dev
+                    let server = 'http://localhost:5001/truestory-7fe79/us-central1/captureEvents';
+                    //let server = 'https://us-central1-truestory-7fe79.cloudfunctions.net/captureEvents';
                     //events = [];
-                    fetch('https://us-central1-truestory-7fe79.cloudfunctions.net/captureEvents?uid='+_args[0]+'&host='+_args[1]+'&session='+sessionID+'&start='+startTime+'&visitorID='+visitorId+'&referer='+referer, {
+                    fetch(server+'?uid='+_args[0]+'&host='+_args[1]+'&session='+sessionID+'&start='+startTime+'&visitorID='+visitorId+'&referer='+referer+'&updateType=incremental', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'                        
                     },
                     body: jsonEvents,
-                    });
+                    }).then(response =>{
+                        console.log( response)
+                    })
                 }else{
-
+                    if(isLocalhost) console.log('Not Tracking because local host');
+                    
                 }
-              }
+            }
               
               // save events every 10 seconds
             setInterval(save, 1 * 1000);
