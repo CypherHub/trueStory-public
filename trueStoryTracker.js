@@ -77,13 +77,13 @@ var TrueStory = TrueStory || (function(){
                 const byteSize = str => new Blob([str]).size;
                 let sizeOfEvents = byteSize(`jsonEvents`)/1000;
                 //Activate this line for Dev
-                isLocalhost = false;
+                //isLocalhost = false;
                 if(lastPushEventCount!=events.length && !isLocalhost && sizeOfEvents<800){
                     jsonEvents = JSON.stringify(events);
                     events = [];
                     //Activate this line for Dev
-                    let server = 'http://localhost:5001/truestory-7fe79/us-central1/captureEvents';
-                    //let server = 'https://us-central1-truestory-7fe79.cloudfunctions.net/captureEvents';
+                    //let server = 'http://localhost:5001/truestory-7fe79/us-central1/captureEvents';
+                    let server = 'https://us-central1-truestory-7fe79.cloudfunctions.net/captureEvents';
                     //events = [];
                     fetch(server+'?uid='+_args[0]+'&host='+_args[1]+'&session='+sessionID+'&start='+startTime+'&visitorID='+visitorId+'&referer='+referer+'&updateType=incremental', {
                     method: 'POST',
