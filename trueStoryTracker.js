@@ -49,6 +49,7 @@ var TrueStory = TrueStory || (function(){
         helloWorld : function() {
             let lastPushEventCount = 0;
             let events = [];
+            let allEvents = [];
             let startTime = new Date().getTime();
             visitorId = null;
             console.log('TrueStory V4 Initialized')
@@ -69,6 +70,7 @@ var TrueStory = TrueStory || (function(){
             rrwebRecord({
                 emit(event) {
                     events.push(event);
+                    allEvents.push(event);
                 },
             });
 
@@ -78,14 +80,28 @@ var TrueStory = TrueStory || (function(){
                 let sizeOfEvents = byteSize(`jsonEvents`)/1000;
                 //Activate this line for Dev
                 //isLocalhost = false;
+
                 if(lastPushEventCount!=events.length && !isLocalhost && sizeOfEvents<800){
                     jsonEvents = JSON.stringify(events);
                     events = [];
-                    //Activate this line for Dev
-                    //let server = 'http://localhost:5001/truestory-7fe79/us-central1/captureEvents';
+                    
                     let server = 'https://us-central1-truestory-7fe79.cloudfunctions.net/captureEvents';
-                    //events = [];
-                    fetch(server+'?uid='+_args[0]+'&host='+_args[1]+'&session='+sessionID+'&start='+startTime+'&visitorID='+visitorId+'&referer='+referer+'&updateType=incremental', {
+
+                    //Activate this line for Dev
+                    //server = 'http://localhost:5001/truestory-7fe79/us-central1/captureEvents';
+                    
+                    
+                    let updateType = 'incremental'
+                    
+                    //let secondsSinceStart = (new Date().getTime()-startTime)/1000;
+                    if(allEvents.length<20){
+                        //console.log(sizeOfEvents,'Less than 10 events')
+                        updateType = 'full'
+                        jsonEvents = JSON.stringify(allEvents);
+                        //events = allEvents;
+                    }
+                    
+                    fetch(server+'?uid='+_args[0]+'&host='+_args[1]+'&session='+sessionID+'&start='+startTime+'&visitorID='+visitorId+'&referer='+referer+'&updateType='+updateType, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'                        
