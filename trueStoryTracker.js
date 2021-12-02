@@ -53,7 +53,7 @@ var TrueStory = TrueStory || (function(){
             let startTime = new Date().getTime();
             let nextPushIsFull = false;
             visitorId = null;
-            console.log('TrueStory V4 Initialized')
+            console.log('TrueStory V5 Initialized')
             fpPromise
             .then(fp => fp.get())
             .then(result => {
