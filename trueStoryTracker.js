@@ -51,6 +51,7 @@ var TrueStory = TrueStory || (function(){
             let events = [];
             let allEvents = [];
             let startTime = new Date().getTime();
+            let nextPushIsFull = false;
             visitorId = null;
             console.log('TrueStory V4 Initialized')
             fpPromise
@@ -78,17 +79,18 @@ var TrueStory = TrueStory || (function(){
                 let jsonEvents = JSON.stringify(events);
                 const byteSize = str => new Blob([str]).size;
                 let sizeOfEvents = byteSize(`jsonEvents`)/1000;
+                
+                let server = 'https://us-central1-truestory-7fe79.cloudfunctions.net/captureEvents';
+
                 //Activate this line for Dev
+                //server = 'http://localhost:5001/truestory-7fe79/us-central1/captureEvents';
                 //isLocalhost = false;
 
                 if(lastPushEventCount!=events.length && !isLocalhost && sizeOfEvents<800){
                     jsonEvents = JSON.stringify(events);
                     events = [];
                     
-                    let server = 'https://us-central1-truestory-7fe79.cloudfunctions.net/captureEvents';
-
-                    //Activate this line for Dev
-                    //server = 'http://localhost:5001/truestory-7fe79/us-central1/captureEvents';
+                    
                     
                     
                     let updateType = 'incremental'
@@ -100,15 +102,30 @@ var TrueStory = TrueStory || (function(){
                         jsonEvents = JSON.stringify(allEvents);
                         //events = allEvents;
                     }
+
+                    if(nextPushIsFull){
+                        updateType = 'full';
+                        jsonEvents = JSON.stringify(allEvents);
+                        nextPushIsFull = false;
+                    }
                     
-                    fetch(server+'?uid='+_args[0]+'&host='+_args[1]+'&session='+sessionID+'&start='+startTime+'&visitorID='+visitorId+'&referer='+referer+'&updateType='+updateType, {
+                    fetch(server+'?uid='+_args[0]+'&host='+_args[1]+'&session='+sessionID+'&start='+startTime+'&visitorID='+visitorId+'&referer='+referer+'&updateType='+updateType+'&eventCount='+allEvents.length, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'                        
                     },
                     body: jsonEvents,
                     }).then(response =>{
-                        //console.log( response)
+                        //console.log(response)
+                        return response.json();
+                    }).then(response =>{
+                        //console.log(response)
+                        //console.log('Event count:',allEvents.length, ', Events Recorded:',response.eventCount, 'push type:'+updateType)
+                        //console.log()
+                        if((response.requestFullSnapshot)) {
+                            //console.log('Count is off, pushing full on next');
+                            nextPushIsFull = true;
+                        }
                     })
                 }else{
                     if(isLocalhost) console.log('Not Tracking because local host');
@@ -117,7 +134,7 @@ var TrueStory = TrueStory || (function(){
             }
               
               // save events every 10 seconds
-            setInterval(save, 1 * 1000);
+            setInterval(save, 2 * 1000);
         }
     };
 }());
